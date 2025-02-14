@@ -15,13 +15,13 @@ rating_model = pipeline(
 
 # Define the request body schema using Pydantic
 class ReviewRequest(BaseModel):
-    review: str
+    sentence: str
 
 # Create a POST endpoint to get the rating prediction
 @app.post("/review", summary="Predict the rating from a review")
 async def predict_rating(request: ReviewRequest):
     # Offload the blocking inference to a thread so as not to block the event loop
-    result = await asyncio.to_thread(rating_model, request.review)
+    result = await asyncio.to_thread(rating_model, request.sentence)
     return result
 
 # A simple health check endpoint
